@@ -1,14 +1,9 @@
+import json
+
 users = {}
 
-with open("Authentication/usersdata.txt") as usersdata:
-    datas = usersdata.read().split()
-    key = ''
-    for i in range(len(datas)):
-        if i % 5 == 0:
-            key = datas[i]
-            users[key] = []
-        else:
-            users[key].append(datas[i])
+with open('usersdata.json') as usersdata:
+    users = json.load(usersdata)
 
 emailtypes = ["gmail.com", "email.com", "outlook.com", "mail.ru"]
 
@@ -250,8 +245,10 @@ class SignUp:
         fName = fName.lower()
         lName = lName.lower()
 
-        with open('Authentication/usersdata.txt', 'a') as usersdata:
-            usersdata.write(f" {email} {fName} {lName} {telNumber} {password}")
+        users[email] = [fName, lName, telNumber, password]
+
+        with open('usersdata.json', 'w') as usersdata:
+            json.dump(users, usersdata)
 
         green()
         print("Signed up Successfully!!!")
